@@ -1,0 +1,50 @@
+Settings:
+  Garden:
+    Gas:
+      Name: '§b花园瓦斯'
+      Lore: '§3生成{FLOWERNAME}'
+      Radius: 5
+      Recipe:
+        Line1: '   '
+        Line2: 'ABC'
+        Line3: '   '
+        Material:
+          A: BONE_MEAL
+          B: SPLASH_POTION
+          C: '{FLOWER}'
+          # .. more if needed
+    FlowerLocalization:
+      Dandelion:
+        Name: '蒲公英'
+      Poppy:
+        Name: '虞美人'
+      Blue_Orchid:
+        Name: '兰花'
+      Allium:
+        Name: '绒球葱'
+      Azure_Bluet:
+        Name: '茜草花'
+      Orange_Tulip:
+        Name: '橙色郁金香'
+      Pink_Tulip:
+        Name: '粉色郁金香'
+      Red_Tulip:
+        Name: '红色郁金香'
+      White_Tulip:
+        Name: '白色郁金香'
+      Oxeye_Daisy:
+        Name: '滨菊'
+      Sunflower:
+        Name: '向日葵'
+      Lilac:
+        Name: '欧丁香'
+      Rose_Bush:
+        Name: '玫瑰丛'
+      Peony:
+        Name: '牡丹'
+      Cornflower:
+        Name: '矢车菊'
+      Lily_of_the_Valley:
+        Name: '铃兰'
+      Wither_Rose:
+        Name: '凋零玫瑰'

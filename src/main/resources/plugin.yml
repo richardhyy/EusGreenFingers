@@ -1,0 +1,14 @@
+name: GreenFingers
+main: cc.eumc.GreenFingers
+version: 1.0.16
+author: EucalyptusLeaves
+api-version: 1.13
+commands:
+  greenfingers:
+    description: EusGreenFinger command
+    aliases: [gf]
+    permission: GreenFingers.use
+    permission-message: "You are lacking the permission node 'GreenFingers.use'"
+permissions:
+  GreenFingers.get:
+    default: op
