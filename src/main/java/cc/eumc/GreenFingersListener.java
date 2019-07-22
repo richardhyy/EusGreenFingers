@@ -3,26 +3,14 @@ package cc.eumc;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.Dispenser;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Dictionary;
-import java.util.UUID;
 
 public class GreenFingersListener implements Listener {
     static Plugin instance = GreenFingers.instance;
-    //Dictionary<Entity, ItemStack> projectileDictionary;
 
     @EventHandler
     public void onPotionSplash (PotionSplashEvent e) {
@@ -40,44 +28,6 @@ public class GreenFingersListener implements Listener {
         }
     }
 
-    /*@EventHandler
-    public void onProjectileHit (ProjectileHitEvent e) {
-        if (e.getEntityType() == EntityType.SPLASH_POTION) {
-            final Material plant = GreenFingers.getTypeOfFlowerGas(projectileDictionary.get(e.getEntity()));   // planet would be the target planet type if the potion is a GreenFingers one
-            if (plant != null && e.getHitBlock() != null) {                                           // | is it a GreenFingers item?
-                final Location hitLocation = e.getHitBlock().getLocation();
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        GreenFingers.sendInfo("Planted " +
-                                "" + genPlant(hitLocation, plant) +
-                                " " + plant.toString());
-                    }
-                }.runTaskLater(instance, 1);
-                projectileDictionary.remove(e.getEntity().getEntityId());
-            }
-        }
-    }
-
-    @EventHandler
-    public void onProjectileLaunch (ProjectileLaunchEvent e) {
-        ProjectileSource projectileSource = e.getEntity().getShooter();
-        if (projectileSource instanceof Player) {
-            Player player = (Player)projectileSource;
-            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            if (itemInMainHand != null) {
-                if (itemInMainHand.getType() == Material.SPLASH_POTION) {
-                    if (GreenFingers.getTypeOfFlowerGas(itemInMainHand) != null) {
-                        projectileDictionary.put(e.getEntity(), itemInMainHand);
-                    }
-                }
-            }
-        }
-        else if (projectileSource instanceof Dispenser) {
-
-        }
-    }
-*/
     public static Integer genPlant(Location centerBlock, Material plant) {
         if (centerBlock == null || plant == null) {
             GreenFingers.sendWarn((centerBlock==null?"CenterBlock":"") + (plant==null?"Plant":"" + " = null"));
