@@ -24,8 +24,6 @@ public class GreenFingers extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        sendInfo("已经启用了");
-
         File file = new File(getDataFolder(), "config.yml");
 
         if (!file.exists()) {
@@ -38,10 +36,12 @@ public class GreenFingers extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new GreenFingersListener(),this);
         Bukkit.getPluginCommand("greenfingers").setExecutor(new GreenFingerCommandExecutor());
+
+        sendInfo("Enabled");
     }
 
     public void onDisable() {
-        sendInfo("已经停用了");
+        sendInfo("Disabled");
     }
 
     private void createRecipes() {
@@ -126,26 +126,14 @@ public class GreenFingers extends JavaPlugin {
 
 
     public static void sendSevere(String message) {
-        Bukkit.getServer().getLogger().severe("[桉树叶] [GreenFingers] " + message);
+        Bukkit.getServer().getLogger().severe("[EucalyptusLeaves] [GreenFingers] " + message);
     }
 
     public static void sendWarn(String message) {
-        Bukkit.getServer().getLogger().warning("[桉树叶] [GreenFingers] " + message);
+        Bukkit.getServer().getLogger().warning("[EucalyptusLeaves] [GreenFingers] " + message);
     }
 
     public static void sendInfo(String message) {
-        Bukkit.getServer().getLogger().info("[桉树叶] [GreenFingers] " + message);
-    }
-
-    public static <T> List<T> intersection(List<T> list1, List<T> list2) {
-        List<T> list = new ArrayList<T>();
-
-        for (T t : list1) {
-            if(list2.contains(t)) {
-                list.add(t);
-            }
-        }
-
-        return list;
+        Bukkit.getServer().getLogger().info("[EucalyptusLeaves] [GreenFingers] " + message);
     }
 }
