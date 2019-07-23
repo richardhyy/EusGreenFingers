@@ -1,5 +1,6 @@
 package cc.eumc;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,11 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
                         plugin.reloadConfig();
                         sender.sendMessage("§b§l[EusGreenFingers] Reloaded");
                     }
+                    else if (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("list")) {
+                        for(Material flower : GreenFingers.getFlowerList()) {
+                            sender.sendMessage("§b§l[EusGreenFingers] §b/sn get " + flower.name());
+                        }
+                    }
                 }
                 else if (args.length >= 2) {
                     if (args[0].equalsIgnoreCase("get")) {
@@ -28,6 +34,7 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
                         ItemStack itemStack = GreenFingers.getFlowerGas(args[1], amount);
                         if (itemStack == null) {
                             sender.sendMessage("§b§l[EusGreenFingers] §cNo such plant supported: " + args[1]);
+                            sender.sendMessage("§b§l[EusGreenFingers] §bType §b§l/gf list §bto access flower list.");
                         }
                         else {
                             ((Player)sender).getInventory().addItem(itemStack);

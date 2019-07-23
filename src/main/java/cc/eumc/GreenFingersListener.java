@@ -9,6 +9,9 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
+import java.util.Random;
+
 public class GreenFingersListener implements Listener {
     static Plugin instance = GreenFingers.instance;
 
@@ -41,6 +44,11 @@ public class GreenFingersListener implements Listener {
         Integer by = centerBlock.getBlockY();
         Integer bz = centerBlock.getBlockZ();
 
+        List<Material> flowerList = GreenFingers.getFlowerList();
+        if (flowerList == null && plant == Material.AIR) {
+            return 0;
+        }
+
         for(Integer x = bx - radius; x <= bx + radius; x++) {
             for(Integer y = by - radius; y <= by + radius; y++) {
                 for(Integer z = bz - radius; z <= bz + radius; z++) {
@@ -54,7 +62,12 @@ public class GreenFingersListener implements Listener {
                             targetLocation.setY(targetLocation.getY() + 1);
                             Block targetBlock = targetLocation.getBlock();
                             if (targetBlock.getType() == Material.AIR) {
-                                targetBlock.setType(plant);
+                                if (plant == Material.AIR) { // is it a MIXED potion?
+                                    plant = flowerList.get(dice(0, flowerList.size()-1));
+                                }
+                                else {
+                                    targetBlock.setType(plant);
+                                }
                                 flowerCount++;
                             }
                         }
@@ -68,4 +81,7 @@ public class GreenFingersListener implements Listener {
         return flowerCount;
     }
 
+    private static int dice(int min, int max) {
+        return (new Random().nextInt(max) % (max - min + 1) + min);
+    }
 }

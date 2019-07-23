@@ -14,37 +14,111 @@ Settings:
           C: '{FLOWER}'
           # .. more if needed
     FlowerLocalization:
+      MIXED:
+        Name: '大杂烩'
+        Color:
+          R: 182
+          G: 229
+          B: 46
       Dandelion:
         Name: '蒲公英'
+        Color:
+          R: 122
+          G: 229
+          B: 50
       Poppy:
         Name: '虞美人'
+        Color:
+          R: 200
+          G: 86
+          B: 40
       Blue_Orchid:
         Name: '兰花'
+        Color:
+          R: 69
+          G: 146
+          B: 194
       Allium:
         Name: '绒球葱'
+        Color:
+          R: 233
+          G: 146
+          B: 194
       Azure_Bluet:
         Name: '茜草花'
+        Color:
+          R: 233
+          G: 222
+          B: 138
       Orange_Tulip:
         Name: '橙色郁金香'
+        Color:
+          R: 233
+          G: 120
+          B: 61
       Pink_Tulip:
         Name: '粉色郁金香'
+        Color:
+          R: 233
+          G: 222
+          B: 174
       Red_Tulip:
         Name: '红色郁金香'
+        Color:
+          R: 233
+          G: 56
+          B: 69
       White_Tulip:
         Name: '白色郁金香'
+        Color:
+          R: 233
+          G: 205
+          B: 210
       Oxeye_Daisy:
         Name: '滨菊'
+        Color:
+          R: 233
+          G: 205
+          B: 100
       Sunflower:
         Name: '向日葵'
+        Color:
+          R: 233
+          G: 183
+          B: 57
       Lilac:
         Name: '欧丁香'
+        Color:
+          R: 233
+          G: 103
+          B: 191
       Rose_Bush:
         Name: '玫瑰丛'
+        Color:
+          R: 233
+          G: 53
+          B: 69
       Peony:
         Name: '牡丹'
+        Color:
+          R: 233
+          G: 142
+          B: 209
       Cornflower:
         Name: '矢车菊'
+        Color:
+          R: 47
+          G: 163
+          B: 216
       Lily_of_the_Valley:
         Name: '铃兰'
+        Color:
+          R: 233
+          G: 233
+          B: 233
       Wither_Rose:
         Name: '凋零玫瑰'
+        Color:
+          R: 10
+          G: 20
+          B: 10

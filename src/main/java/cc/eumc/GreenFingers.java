@@ -7,7 +7,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -63,9 +62,10 @@ public class GreenFingers extends JavaPlugin {
                             config.getString("Settings.Garden.Gas.Recipe.Line2"),
                             config.getString("Settings.Garden.Gas.Recipe.Line3"));
                 for (String ingredient : config.getConfigurationSection("Settings.Garden.Gas.Recipe.Material").getKeys(false)) {
-                    Material ingredientMaterial = Material.getMaterial(config.getString("Settings.Garden.Gas.Recipe.Material." + ingredient).toUpperCase().replace("{FLOWER}", flowerName.toUpperCase()));
+                    String ingredientName = config.getString("Settings.Garden.Gas.Recipe.Material." + ingredient).toUpperCase().replace("{FLOWER}", flowerName.toUpperCase()).toUpperCase();
+                    Material ingredientMaterial = ingredientName=="MIXED" ? Material.BONE_MEAL : Material.getMaterial(ingredientName);
                     if (ingredientMaterial == null) {
-                        sendSevere("Ingredient item " + config.getString("Settings.Garden.Gas.Recipe.Material." + ingredient + " does not exist!"));
+                        sendSevere("Ingredient item " + config.getString(ingredientName + " does not exist!"));
                     }
                     else {
                         recipe.setIngredient( ingredient.charAt(0), ingredientMaterial);
@@ -91,13 +91,17 @@ public class GreenFingers extends JavaPlugin {
         potionMeta.setDisplayName("§r" + config.getString("Settings.Garden.Gas.Name"));
         potionMeta.setLore(new ArrayList(Arrays.asList(
                 config.getString("Settings.Garden.Gas.Lore")
-                        .replace("{FLOWERNAME}", config.getString("Settings.Garden.FlowerLocalization."+ flowerName +".Name")),
+                        .replace("{FLOWERNAME}", config.getString("Settings.Garden.FlowerLocalization." + flowerName + ".Name")),
                 "§7" + flowerName.toUpperCase()
         )));
-        potionMeta.setColor(Color.fromBGR(103,255,175));
+        potionMeta.setColor(Color.fromBGR(
+                 config.getInt("Settings.Garden.FlowerLocalization." + flowerName + ".Color.B", 103),
+                config.getInt("Settings.Garden.FlowerLocalization." + flowerName + ".Color.G",255),
+                config.getInt("Settings.Garden.FlowerLocalization." + flowerName + ".Color.R",175)) );
+
         gas.setItemMeta(potionMeta);
 
-        gas.setAmount(amount>0? amount : 1);
+        gas.setAmount(amount > 0 ? amount : 1);
 
         return gas;
     }
@@ -109,12 +113,10 @@ public class GreenFingers extends JavaPlugin {
                 PotionMeta itemMeta = (PotionMeta) itemStack.getItemMeta();
                 if (itemMeta.getDisplayName().contains("§r" + config.getString("Settings.Garden.Gas.Name")) && itemMeta.hasLore()) {
                     List<String> lore = itemMeta.getLore();
-                    //sendInfo("Lore size: " + "" + lore.size());
                     if (lore.size() == 2) {
                         for (String flowerName : config.getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
-                            //sendInfo(flowerName.toUpperCase() + " =?= " + lore.get(1));
                             if (lore.indexOf("§7" + flowerName.toUpperCase()) != -1) {
-                                return Material.getMaterial(flowerName.toUpperCase());
+                                return flowerName.toUpperCase()=="MIXED"? Material.AIR : Material.getMaterial(flowerName.toUpperCase());
                             }
                         }
                     }
@@ -124,6 +126,21 @@ public class GreenFingers extends JavaPlugin {
         return null;
     }
 
+    public static List<Material> getFlowerList() {
+        List<Material> flowerList = null;
+        for (String flowerName : instance.getConfig().getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
+            flowerName = flowerName.toUpperCase();
+            Material _flower = Material.getMaterial(flowerName);
+            if (flowerName != "MIXED" && _flower != null) {
+                flowerList.add(_flower);
+            }
+        }
+        if (flowerList.size() == 0) {
+            GreenFingers.sendSevere("Failed loading customized flower list.");
+            return null;
+        }
+        return flowerList;
+    }
 
     public static void sendSevere(String message) {
         Bukkit.getServer().getLogger().severe("[EucalyptusLeaves] [GreenFingers] " + message);
