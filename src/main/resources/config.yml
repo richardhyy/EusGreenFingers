@@ -4,6 +4,10 @@ Settings:
       Name: '§b花园瓦斯'
       Lore: '§3生成{FLOWERNAME}'
       Radius: 5
+      Shape:
+        # Type: 'Round' / 'Star'(beta)
+        Type: 'Round'
+        VertexCount: 5
       Recipe:
         Line1: '   '
         Line2: 'ABC'

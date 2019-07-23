@@ -1,5 +1,6 @@
 package cc.eumc;
 
+import com.sun.tools.javac.jvm.Items;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,6 +17,7 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
             if (sender.hasPermission("GreenFingers.get")) {
                 if (args.length == 0) {
                     sender.sendMessage("§b§l[EusGreenFingers] /gf get <Plant Type>");
+                    sender.sendMessage("§b§l[EusGreenFingers] /gf list");
                 }
                 else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase("reload")) {
@@ -31,15 +33,26 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
                 else if (args.length >= 2) {
                     if (args[0].equalsIgnoreCase("get")) {
                         Integer amount = args.length==3? Integer.valueOf(args[2]) : 1;
-                        ItemStack itemStack = GreenFingers.getFlowerGas(args[1], amount);
+                        String targetFlower = args[1];
+                        ItemStack itemStack = null;
+                        for (String flowerName : plugin.getConfig().getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
+                            if(flowerName.equalsIgnoreCase(targetFlower)) {
+                                itemStack = GreenFingers.getFlowerGas(flowerName, amount); // Translate flowerName into a legal one
+                                break;
+                            }
+                        }
                         if (itemStack == null) {
-                            sender.sendMessage("§b§l[EusGreenFingers] §cNo such plant supported: " + args[1]);
+                            sender.sendMessage("§b§l[EusGreenFingers] §cNo such plant supported: " + targetFlower);
                             sender.sendMessage("§b§l[EusGreenFingers] §bType §b§l/gf list §bto access flower list.");
                         }
                         else {
                             ((Player)sender).getInventory().addItem(itemStack);
                             sender.sendMessage("§b§l[EusGreenFingers] " + "" + amount + " " + args[1] + " has been added to your inventory.");
                         }
+                    }
+                    else {
+                        sender.sendMessage("§b§l[EusGreenFingers] /gf get <Plant Type>");
+                        sender.sendMessage("§b§l[EusGreenFingers] /gf list");
                     }
                 }
             }

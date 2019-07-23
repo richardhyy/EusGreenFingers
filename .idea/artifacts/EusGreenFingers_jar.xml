@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="EusFlowerGas:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/EusFlowerGas_jar</output-path>
-    <root id="archive" name="EusFlowerGas.jar">
+  <artifact type="jar" build-on-make="true" name="EusGreenFingers:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EusGreenFingers_jar</output-path>
+    <root id="archive" name="EusGreenFingers.jar">
       <element id="module-output" name="EusFlowerGas" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/config.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />

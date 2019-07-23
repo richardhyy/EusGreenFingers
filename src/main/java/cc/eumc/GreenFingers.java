@@ -48,7 +48,7 @@ public class GreenFingers extends JavaPlugin {
 
         for (String flowerName : config.getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
 
-            Material flower = Material.getMaterial(flowerName.toUpperCase());
+            Material flower = flowerName.equalsIgnoreCase("MIXED")? Material.BONE_MEAL : Material.getMaterial(flowerName.toUpperCase());
 
             if (flower != null) {
                 // Generate FlowerGas
@@ -62,8 +62,8 @@ public class GreenFingers extends JavaPlugin {
                             config.getString("Settings.Garden.Gas.Recipe.Line2"),
                             config.getString("Settings.Garden.Gas.Recipe.Line3"));
                 for (String ingredient : config.getConfigurationSection("Settings.Garden.Gas.Recipe.Material").getKeys(false)) {
-                    String ingredientName = config.getString("Settings.Garden.Gas.Recipe.Material." + ingredient).toUpperCase().replace("{FLOWER}", flowerName.toUpperCase()).toUpperCase();
-                    Material ingredientMaterial = ingredientName=="MIXED" ? Material.BONE_MEAL : Material.getMaterial(ingredientName);
+                    String ingredientName = config.getString("Settings.Garden.Gas.Recipe.Material." + ingredient).toUpperCase().replace("{FLOWER}", (flowerName.equalsIgnoreCase("MIXED")? Material.BONE_MEAL.name() : flowerName).toUpperCase());
+                    Material ingredientMaterial = Material.getMaterial(ingredientName);
                     if (ingredientMaterial == null) {
                         sendSevere("Ingredient item " + config.getString(ingredientName + " does not exist!"));
                     }
@@ -116,7 +116,7 @@ public class GreenFingers extends JavaPlugin {
                     if (lore.size() == 2) {
                         for (String flowerName : config.getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
                             if (lore.indexOf("§7" + flowerName.toUpperCase()) != -1) {
-                                return flowerName.toUpperCase()=="MIXED"? Material.AIR : Material.getMaterial(flowerName.toUpperCase());
+                                return (flowerName.equalsIgnoreCase("MIXED")? Material.AIR : Material.getMaterial(flowerName.toUpperCase()));
                             }
                         }
                     }
@@ -127,12 +127,13 @@ public class GreenFingers extends JavaPlugin {
     }
 
     public static List<Material> getFlowerList() {
-        List<Material> flowerList = null;
+        List<Material> flowerList = new ArrayList<Material>();
         for (String flowerName : instance.getConfig().getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
-            flowerName = flowerName.toUpperCase();
-            Material _flower = Material.getMaterial(flowerName);
-            if (flowerName != "MIXED" && _flower != null) {
-                flowerList.add(_flower);
+            if (flowerName.toUpperCase() != "MIXED") {
+                Material _flower = Material.getMaterial(flowerName.toUpperCase());
+                if (_flower != null) {
+                    flowerList.add(_flower);
+                }
             }
         }
         if (flowerList.size() == 0) {
