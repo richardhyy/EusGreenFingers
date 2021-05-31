@@ -144,14 +144,14 @@ public class GreenFingers extends JavaPlugin {
     }
 
     public static void sendSevere(String message) {
-        Bukkit.getServer().getLogger().severe("[EucalyptusLeaves] [GreenFingers] " + message);
+        Bukkit.getServer().getLogger().severe("[GreenFingers] " + message);
     }
 
     public static void sendWarn(String message) {
-        Bukkit.getServer().getLogger().warning("[EucalyptusLeaves] [GreenFingers] " + message);
+        Bukkit.getServer().getLogger().warning("[GreenFingers] " + message);
     }
 
     public static void sendInfo(String message) {
-        Bukkit.getServer().getLogger().info("[EucalyptusLeaves] [GreenFingers] " + message);
+        Bukkit.getServer().getLogger().info("[GreenFingers] " + message);
     }
 }

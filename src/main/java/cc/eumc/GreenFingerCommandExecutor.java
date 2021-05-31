@@ -1,6 +1,6 @@
 package cc.eumc;
 
-import com.sun.tools.javac.jvm.Items;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,8 +25,9 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
                         sender.sendMessage("§b§l[EusGreenFingers] Reloaded");
                     }
                     else if (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("list")) {
-                        for(Material flower : GreenFingers.getFlowerList()) {
-                            sender.sendMessage("§b§l[EusGreenFingers] §b/sn get " + flower.name());
+                        for (Material flower : GreenFingers.getFlowerList()) {
+                            String cmdStr = "/sn get " + flower.name();
+                            sendCopyableMessage((Player)sender, "[EusGreenFingers] §b" + cmdStr, cmdStr);
                         }
                     }
                 }
@@ -66,5 +67,17 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
             sender.sendMessage("§b§l[EusGreenFingers] Invalid Operation");
         }
         return true;
+    }
+
+    private void sendMessage(Player player, TextComponent component) {
+        player.spigot().sendMessage(component);
+    }
+
+    private void sendCopyableMessage(Player player, String message, String value) {
+        BaseComponent[] clickToCopy =  new ComponentBuilder("Click to use").create();
+        TextComponent workerMessage = new TextComponent(message);
+        workerMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, value));
+        workerMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, clickToCopy));
+        sendMessage(player, workerMessage);
     }
 }
