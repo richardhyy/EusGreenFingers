@@ -88,12 +88,12 @@ public class GreenFingers extends JavaPlugin {
         ItemStack gas = new ItemStack(Material.SPLASH_POTION);
         PotionMeta potionMeta = (PotionMeta) gas.getItemMeta();
 
-        potionMeta.setDisplayName("§r" + config.getString("Settings.Garden.Gas.Name"));
-        potionMeta.setLore(new ArrayList(Arrays.asList(
+        potionMeta.setDisplayName(config.getString("Settings.Garden.Gas.Name"));
+        potionMeta.setLore(Arrays.asList(
                 config.getString("Settings.Garden.Gas.Lore")
                         .replace("{FLOWERNAME}", config.getString("Settings.Garden.FlowerLocalization." + flowerName + ".Name")),
                 "§7" + flowerName.toUpperCase()
-        )));
+        ));
         potionMeta.setColor(Color.fromBGR(
                  config.getInt("Settings.Garden.FlowerLocalization." + flowerName + ".Color.B", 103),
                 config.getInt("Settings.Garden.FlowerLocalization." + flowerName + ".Color.G",255),
@@ -111,7 +111,7 @@ public class GreenFingers extends JavaPlugin {
         if (itemStack != null) {
             if (itemStack.getType() == Material.SPLASH_POTION) {
                 PotionMeta itemMeta = (PotionMeta) itemStack.getItemMeta();
-                if (itemMeta.getDisplayName().contains("§r" + config.getString("Settings.Garden.Gas.Name")) && itemMeta.hasLore()) {
+                if (itemMeta.getDisplayName().contains(config.getString("Settings.Garden.Gas.Name")) && itemMeta.hasLore()) {
                     List<String> lore = itemMeta.getLore();
                     if (lore.size() == 2) {
                         for (String flowerName : config.getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
@@ -129,7 +129,7 @@ public class GreenFingers extends JavaPlugin {
     public static List<Material> getFlowerList() {
         List<Material> flowerList = new ArrayList<Material>();
         for (String flowerName : instance.getConfig().getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
-            if (flowerName.toUpperCase() != "MIXED") {
+            if (!flowerName.equalsIgnoreCase("MIXED")) {
                 Material _flower = Material.getMaterial(flowerName.toUpperCase());
                 if (_flower != null) {
                     flowerList.add(_flower);

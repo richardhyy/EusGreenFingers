@@ -35,7 +35,7 @@ public class GreenFingersListener implements Listener {
         }
     }
 
-    public static Integer genPlant(Location centerBlock, Material plant) {
+    public static int genPlant(Location centerBlock, Material plant) {
         if (centerBlock == null || plant == null) {
             GreenFingers.sendWarn((centerBlock==null?"CenterBlock":"") + (plant==null?"Plant":"" + " = null"));
             return 0;
