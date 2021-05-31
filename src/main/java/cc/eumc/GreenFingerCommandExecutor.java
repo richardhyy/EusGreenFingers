@@ -37,7 +37,7 @@ public class GreenFingerCommandExecutor implements CommandExecutor, TabExecutor 
                     }
                     else if (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("list")) {
                         for (Material flower : plugin.getFlowerList()) {
-                            String cmdStr = "/sn get " + flower.name();
+                            String cmdStr = "/gf get " + flower.name();
                             sendCopyableMessage((Player)sender, "[GreenFingers] §b" + cmdStr, cmdStr);
                         }
                     }
