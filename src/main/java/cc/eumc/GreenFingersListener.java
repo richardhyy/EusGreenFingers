@@ -7,14 +7,17 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Random;
 
 public class GreenFingersListener implements Listener {
-    static Plugin instance = GreenFingers.instance;
+    GreenFingers plugin;
+
+    public GreenFingersListener(GreenFingers plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onPotionSplash (PotionSplashEvent e) {
@@ -31,30 +34,30 @@ public class GreenFingersListener implements Listener {
                             "" + genPlant(hitLocation, plant) +
                             (plant.toString().equals("AIR") ?"MIX":plant.toString()) );
                 }
-            }.runTaskLater(instance, 1);
+            }.runTaskLater(plugin, 1);
         }
     }
 
-    public static int genPlant(Location centerBlock, Material plant) {
+    public int genPlant(Location centerBlock, Material plant) {
         if (centerBlock == null || plant == null) {
             GreenFingers.sendWarn((centerBlock==null?"CenterBlock":"") + (plant==null?"Plant":"" + " = null"));
             return 0;
         }
 
-        int radius = instance.getConfig().getInt("Settings.Garden.Gas.Radius");
+        int radius = plugin.getConfig().getInt("Settings.Garden.Gas.Radius");
         int flowerCount = 0;
 
         int bx = centerBlock.getBlockX();
         int by = centerBlock.getBlockY();
         int bz = centerBlock.getBlockZ();
 
-        List<Material> flowerList = (plant == Material.AIR)? GreenFingers.getFlowerList() : null;
+        List<Material> flowerList = (plant == Material.AIR)? plugin.getFlowerList() : null;
         if (plant == Material.AIR && flowerList == null) {
             return 0;
         }
 
-        if (instance.getConfig().getString("Settings.Garden.Gas.Shape.Type").equalsIgnoreCase( "star")) {
-            StarPolygon star = new StarPolygon(0, 0, radius, (int)(radius*0.618), instance.getConfig().getInt("Settings.Garden.Gas.Shape.VertexCount", 5));
+        if (plugin.getConfig().getString("Settings.Garden.Gas.Shape.Type").equalsIgnoreCase( "star")) {
+            StarPolygon star = new StarPolygon(0, 0, radius, (int)(radius*0.618), plugin.getConfig().getInt("Settings.Garden.Gas.Shape.VertexCount", 5));
             for (int y = (int)(centerBlock.getY() - (radius/2)); y <= (int)(centerBlock.getY() + (radius/2)); y++) {
                 int i = 0; // index of xpoints
                 for (Integer x : star.xpoints) {

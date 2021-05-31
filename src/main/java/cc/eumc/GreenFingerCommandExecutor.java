@@ -2,32 +2,43 @@ package cc.eumc;
 
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
-public class GreenFingerCommandExecutor implements CommandExecutor {
-    Plugin plugin = GreenFingers.instance;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class GreenFingerCommandExecutor implements CommandExecutor, TabExecutor {
+    GreenFingers plugin;
+    private final String[] commands = {"list", "get"};
+    private final String permissionNode = "GreenFingers.get";
+    private String[] flowerTypes;
+
+    public GreenFingerCommandExecutor(GreenFingers plugin) {
+        this.plugin = plugin;
+        this.flowerTypes = plugin.getFlowerList().stream()
+                .map(Enum::name).toArray(String[]::new);
+    }
+
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             if (sender.hasPermission("GreenFingers.get")) {
                 if (args.length == 0) {
-                    sender.sendMessage("§b§l[EusGreenFingers] /gf get <Plant Type>");
-                    sender.sendMessage("§b§l[EusGreenFingers] /gf list");
+                    sender.sendMessage("§b§l[GreenFingers] /gf get <Plant Type>");
+                    sender.sendMessage("§b§l[GreenFingers] /gf list");
                 }
                 else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase("reload")) {
                         plugin.reloadConfig();
-                        sender.sendMessage("§b§l[EusGreenFingers] Reloaded");
+                        sender.sendMessage("§b§l[GreenFingers] Reloaded");
                     }
                     else if (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("list")) {
-                        for (Material flower : GreenFingers.getFlowerList()) {
+                        for (Material flower : plugin.getFlowerList()) {
                             String cmdStr = "/sn get " + flower.name();
-                            sendCopyableMessage((Player)sender, "[EusGreenFingers] §b" + cmdStr, cmdStr);
+                            sendCopyableMessage((Player)sender, "[GreenFingers] §b" + cmdStr, cmdStr);
                         }
                     }
                 }
@@ -43,17 +54,17 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
                             }
                         }
                         if (itemStack == null) {
-                            sender.sendMessage("§b§l[EusGreenFingers] §cNo such plant supported: " + targetFlower);
-                            sender.sendMessage("§b§l[EusGreenFingers] §bType §b§l/gf list §bto access flower list.");
+                            sender.sendMessage("§b§l[GreenFingers] §cNo such plant supported: " + targetFlower);
+                            sender.sendMessage("§b§l[GreenFingers] §bType §b§l/gf list §bto access flower list.");
                         }
                         else {
                             ((Player)sender).getInventory().addItem(itemStack);
-                            sender.sendMessage("§b§l[EusGreenFingers] " + "" + amount + " " + args[1] + " has been added to your inventory.");
+                            sender.sendMessage("§b§l[GreenFingers] " + "" + amount + " " + args[1] + " has been added to your inventory.");
                         }
                     }
                     else {
-                        sender.sendMessage("§b§l[EusGreenFingers] /gf get <Plant Type>");
-                        sender.sendMessage("§b§l[EusGreenFingers] /gf list");
+                        sender.sendMessage("§b§l[GreenFingers] /gf get <Plant Type>");
+                        sender.sendMessage("§b§l[GreenFingers] /gf list");
                     }
                 }
             }
@@ -61,12 +72,26 @@ public class GreenFingerCommandExecutor implements CommandExecutor {
         else if (sender instanceof ConsoleCommandSender && args.length == 1) {
             if (args[0].equalsIgnoreCase("reload")) {
                 plugin.reloadConfig();
-                sender.sendMessage("§b§l[EusGreenFingers] Reloaded");
+                sender.sendMessage("§b§l[GreenFingers] Reloaded");
             }
         } else {
-            sender.sendMessage("§b§l[EusGreenFingers] Invalid Operation");
+            sender.sendMessage("§b§l[GreenFingers] Invalid Operation");
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!sender.hasPermission(permissionNode)) return new ArrayList<>();
+
+        if (args.length > 2)
+            return new ArrayList<>();
+        else if (args.length == 2 && args[0].equalsIgnoreCase("get"))
+            return Arrays.stream(flowerTypes).filter(s -> s.startsWith(args[1])).collect(Collectors.toList());
+        else if (args.length == 1)
+            return Arrays.stream(commands).filter(s -> s.startsWith(args[0])).collect(Collectors.toList());
+        else
+            return Arrays.asList(commands);
     }
 
     private void sendMessage(Player player, TextComponent component) {

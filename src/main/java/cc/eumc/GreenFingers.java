@@ -33,8 +33,8 @@ public class GreenFingers extends JavaPlugin {
         
         createRecipes();
 
-        Bukkit.getPluginManager().registerEvents(new GreenFingersListener(),this);
-        Bukkit.getPluginCommand("greenfingers").setExecutor(new GreenFingerCommandExecutor());
+        Bukkit.getPluginManager().registerEvents(new GreenFingersListener(this),this);
+        Bukkit.getPluginCommand("greenfingers").setExecutor(new GreenFingerCommandExecutor(this));
 
         sendInfo("Enabled");
     }
@@ -126,7 +126,7 @@ public class GreenFingers extends JavaPlugin {
         return null;
     }
 
-    public static List<Material> getFlowerList() {
+    public List<Material> getFlowerList() {
         List<Material> flowerList = new ArrayList<Material>();
         for (String flowerName : instance.getConfig().getConfigurationSection("Settings.Garden.FlowerLocalization").getKeys(false)) {
             if (!flowerName.equalsIgnoreCase("MIXED")) {
